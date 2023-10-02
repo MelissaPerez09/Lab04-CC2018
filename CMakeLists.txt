@@ -23,9 +23,10 @@ add_executable(SR ${SOURCE_FILES})
 
 target_include_directories(
     ${PROJECT_NAME}
-    PUBLIC ${SDL2_INCLUDE_DIRS}  # Include SDL2 include directories
+    PUBLIC /opt/homebrew/Cellar/sdl2/2.28.1/include/
     PUBLIC /opt/homebrew/Cellar/glm/0.9.9.8/include
     PUBLIC /opt/homebrew/Cellar/tbb/2021.10.0/include
+    PUBLIC /opt/homebrew/Cellar/sdl2_image/2.6.3_2/include/
 )
 
 target_link_libraries(${PROJECT_NAME} 

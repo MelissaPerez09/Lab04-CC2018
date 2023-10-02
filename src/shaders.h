@@ -1,5 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "noise.h"
+#include "color.h"
+#include "fragment.h"
 
 struct Uniforms {
     glm::mat4 model;
@@ -37,5 +40,35 @@ Fragment fragmentShader(const Fragment& fragment) {
     Fragment modifiedFragment = fragment;
     modifiedFragment.color = modifiedFragment.color * modifiedFragment.intensity;
     
+    return modifiedFragment;
+}
+
+Fragment myShader(const Fragment& fragment) {
+    // Copia el fragmento original
+    Fragment modifiedFragment = fragment;
+    
+    // Establece el color del fragmento en rojo (255, 0, 0)
+    modifiedFragment.setColor(Color(255, 0, 0));
+
+    
+
+    // Devuelve el fragmento modificado
+    return modifiedFragment;
+}
+
+Fragment planetShader(const Fragment& fragment) {
+    Fragment modifiedFragment = fragment;
+
+    // Color base del planeta
+    Color baseColor(0, 0, 255);  // Azul
+    
+    // Simulación de textura
+    float textureStrength = 0.1;  // Intensidad de la textura
+    Vector3 fragmentPosition = fragment.getPosition();
+    float texture = fract(sin(dot(fragmentPosition, Vector3(12.9898, 78.233, 45.543))) * 43758.5453);
+    baseColor = mix(baseColor, Color(255, 255, 255), textureStrength * texture);
+
+    modifiedFragment.setColor(baseColor);
+
     return modifiedFragment;
 }

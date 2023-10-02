@@ -18,10 +18,13 @@
 #include "ObjLoader.h"
 #include "shaders.h"
 #include "triangle.h"
+#include "model.h"
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
 Color currentColor;
+
+std::vector<Model> models;
 
 bool init() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -48,7 +51,7 @@ void setColor(const Color& color) {
     currentColor = color;
 }
 
-void render(const std::vector<glm::vec3>& VBO, const Uniforms& uniforms) {
+void render(const std::vector<glm::vec3>& VBO, const Uniforms& uniforms, std::function<Fragment(const Fragment&)> shaderFunction) {
     std::vector<Vertex> transformedVertices(VBO.size() / 2);
     for (size_t i = 0; i < VBO.size() / 2; ++i) {
         Vertex vertex = { VBO[i * 2], VBO[i * 2 + 1] };
@@ -72,7 +75,7 @@ void render(const std::vector<glm::vec3>& VBO, const Uniforms& uniforms) {
         );
 
         for (const auto& fragment : rasterizedTriangle) {
-            const Fragment& finalFragment = fragmentShader(fragment);
+            const Fragment& finalFragment = shaderFunction(fragment);
             point(finalFragment);  // Be aware of potential race conditions here
         }
     }
