@@ -18,13 +18,10 @@
 #include "ObjLoader.h"
 #include "shaders.h"
 #include "triangle.h"
-#include "model.h"
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
 Color currentColor;
-
-std::vector<Model> models;
 
 bool init() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {

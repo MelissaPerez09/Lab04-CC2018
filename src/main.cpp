@@ -2,8 +2,6 @@
 
 int main(int argc, char* argv[]) {
 
-    shaderType currentShader = GREENE;
-
     if (!init()) {
         return 1;
     }
@@ -48,7 +46,7 @@ int main(int argc, char* argv[]) {
 
     // Initialize a Camera object
     Camera camera;
-    camera.cameraPosition = glm::vec3(0.0f, 0.0f, 5.0f);
+    camera.cameraPosition = glm::vec3(0.0f, 0.0f, 2.0f);
     camera.targetPosition = glm::vec3(0.0f, 0.0f, 0.0f);
     camera.upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -85,13 +83,6 @@ int main(int argc, char* argv[]) {
             camera.upVector        // The up vector defining the camera's orientation
         );
 
-        Model model1;
-        model1.modelMatrix = glm::mat4(1);
-        model1.vertices = vertexBufferObject;
-        model1.uniforms = uniforms;
-        model1.currentShader = currentShader;
-        models.push_back(model1);
-
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = false;
@@ -99,10 +90,6 @@ int main(int argc, char* argv[]) {
 
             if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_SPACE:
-                        currentShader = static_cast<shaderType>((currentShader + 1) % 7);
-                        std::cout << "Shader: " << currentShader << std::endl;
-                        break;
                     case SDLK_LEFT:
                         camera.cameraPosition.x += -speed;
                         break;
@@ -124,7 +111,9 @@ int main(int argc, char* argv[]) {
         clearFramebuffer();
 
         setColor(Color(128, 128, 128));
-        render(vertexBufferObject, uniforms, myShader);
+
+        //change shader (gasPlanet, orbitalPlanet, misteryPlanet, star, rocoso, star2)
+        render(vertexBufferObject, uniforms, gasPlanet);
 
         renderBuffer(renderer);
     }
